@@ -42,6 +42,27 @@ int isPrimitiveRoot(int k, int num) {
     }
 }
 
+int findGcd(int a, int b) {
+    int reminder = a%b;
+    if (reminder == 0) {
+        return b;
+    } else {
+        return findGcd(b, reminder);
+    }
+}
+
+void returnAllPrimitiveRoots(int k, int num) {
+    for (int i=1; i<k; i++) {
+        if (findGcd(k-1, i) == 1) {
+            int newNum = num;
+            for (int j=1; j<i; j++) {
+                newNum *= num;
+            }
+            cout<<newNum%k<<endl;
+        }
+    }
+}
+
 int main(int argc, const char * argv[]) {
     
     ifstream file("ieeja.txt");
@@ -68,13 +89,17 @@ int main(int argc, const char * argv[]) {
             }
         }
         pMod += 1;
-        // atrod primitīvās saknes
+        // atrod pirmo primitīvo sakni
+        int firstPrimitiveRoot = 0;
         for (int i=0; i<pMod; i++) {
             int possibleRoot = isPrimitiveRoot(pMod, i+1);
             if (possibleRoot != 0) {
-                cout<<possibleRoot<<endl;
+                firstPrimitiveRoot=possibleRoot;
+                break;
             }
         }
+        // atrod pārējās primitīvās saknes
+        returnAllPrimitiveRoots(pMod, firstPrimitiveRoot);
     }
     file.close();
     return 0;
